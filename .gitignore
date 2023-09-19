@@ -1,4 +1,7 @@
 /python/objetos/venv/
+/python/objetos/.idea/
+/python/jogos/.idea/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
