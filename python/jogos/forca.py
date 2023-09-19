@@ -5,11 +5,11 @@ def jogar():
     palavra_secreta, palavra_encontrada = escolhe_palavra() #vendo se funcionou o .gitignore
     erros = 0
     while(True):
-        chute = inputs(palavra_encontrada)
+        print(''.join(palavra_encontrada))
+        chute = inputs()
         palavra_encontrada, erros = checagem(palavra_secreta, palavra_encontrada, chute, erros)
         if (fugas_do_loop(palavra_encontrada, palavra_secreta, erros)):
             break
-    print("*****\nFim do jogo")
 
 def boas_vindas():
     print("*********************************")
@@ -26,17 +26,7 @@ def escolhe_palavra():
     palavra_secreta = palavras[random.randrange(0, len(palavras))]
     return palavra_secreta, ["_" for letra in palavra_secreta]
 
-def fugas_do_loop(palavra_encontrada, palavra_secreta, erros):
-    if ("_" not in palavra_encontrada):
-        print("Parabéns! Você acertou a palavra {}!".format(palavra_secreta))
-        return True
-
-    if (erros == 10):
-        print("Que pena! Não encontrou a palavra {}! :(".format(palavra_secreta))
-        return True
-
-def inputs(palavra_encontrada):
-    print(''.join(palavra_encontrada))
+def inputs():
     while(True):
         chute = input("Qual letra? ")
         if len(chute) > 1:
@@ -57,6 +47,15 @@ def checagem(palavra_secreta, palavra_encontrada, chute, erros):
                 palavra_encontrada[index] = chute.lower()
             index += 1
     return palavra_encontrada, erros
+
+def fugas_do_loop(palavra_encontrada, palavra_secreta, erros):
+    if ("_" not in palavra_encontrada):
+        print("Parabéns! Você acertou a palavra {}!".format(palavra_secreta))
+        return True
+
+    if (erros == 10):
+        print("Que pena! Não encontrou a palavra {}! :(".format(palavra_secreta))
+        return True
 
 if(__name__ == "__main__"):
     jogar()
