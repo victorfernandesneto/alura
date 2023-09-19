@@ -2,7 +2,7 @@ import random
 
 def jogar():
     boas_vindas()
-    palavra_secreta, palavra_encontrada = escolhe_palavra()
+    palavra_secreta, palavra_encontrada = escolhe_palavra() #vendo se funcionou o .gitignore
     erros = 0
     while(True):
         chute = inputs(palavra_encontrada)
