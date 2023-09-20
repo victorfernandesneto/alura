@@ -1,1 +1,0 @@
-print("Vamos começar com objetos!")

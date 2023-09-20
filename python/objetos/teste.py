@@ -1,4 +1,9 @@
-def cria_conta(numero, nome, saldo, limite):
-    conta = {"numero": numero, "nome": nome, "saldo": saldo, "limite": limite}
-    return conta
+class Data:
 
+    def __init__(self, dia, mes, ano):
+        self.dia = dia
+        self.mes = mes
+        self.ano = ano
+
+    def formatada(self):
+        print(f"{self.dia}/{self.mes}/{self.ano}")

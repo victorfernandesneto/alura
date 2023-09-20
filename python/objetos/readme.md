@@ -1,0 +1,1 @@
+Nesse módulo, o prof. Nico utilizou uma conta de banco para criar o paradigma. Eu, como praticante de boxe, observo que "academias de bairro" não tem um sistema muito elaborado para observar o fluxo e controlar o pagamento de seus alunos. Portanto, vou utilizar esse módulo para tentar montar um sistema de controle de fluxo e pagamentos dos alunos. 
