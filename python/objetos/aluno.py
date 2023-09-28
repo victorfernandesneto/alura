@@ -1,13 +1,14 @@
 from datetime import datetime
 from dateutil import relativedelta
 
+
 class Aluno:
     def __init__(self, nome, data_de_nascimento, plano):
-        self.__nome               = nome
-        self.__matriculado_em     = self.__matricula_hoje()
+        self.__nome = nome
+        self.__matriculado_em = self.__matricula_hoje()
         self.__data_de_nascimento = data_de_nascimento
-        self.__idade              = self.__calcula_idade()
-        self.__plano              = plano
+        self.__idade = self.__calcula_idade()
+        self.__plano = plano
         print(f"Aluno {self.__nome} matriculado! Bem-vindo à PROBOXE!")
 
     @property
@@ -33,7 +34,7 @@ class Aluno:
     @plano.setter
     def plano(self, plano):
         plano_valido = plano in range(1, 6)
-        if(plano_valido):
+        if plano_valido:
             self.__plano = plano
         else:
             print("Insira um plano válido!")
@@ -48,7 +49,8 @@ class Aluno:
         idade = hoje.year - n_date.year - ((hoje.month, hoje.day) < (n_date.month, n_date.day))
         return idade
 
-    def __matricula_hoje(self):
+    @staticmethod
+    def __matricula_hoje():
         hoje = datetime.today()
         hoje_str = hoje.strftime('%d/%m/%Y')
         return hoje_str
@@ -101,15 +103,16 @@ class Aluno:
         elif dias > 1:
             dias_str = f"{dias} dias."
 
-        if(not anos_str and not meses_str and not dias_str):
+        if not anos_str and not meses_str and not dias_str:
             print("Você se matriculou hoje!")
         else:
             tempo_na_academia = f"{anos_str} {meses_str} {dias_str}"
             print(' '.join(tempo_na_academia.split()))
 
-
     def imprime_dados(self):
-        print(f"Aluno {self.__nome}, matriculado em {self.__matriculado_em}, {self.__idade()} anos e treina {self.__plano} vezes na semana.")
+        print(
+            f"Aluno {self.__nome}, matriculado em {self.__matriculado_em}, {self.__idade} anos e treina {self.__plano} vezes na semana.")
+
 
 """
 Linha de código básica p/ teste no console
