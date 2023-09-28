@@ -64,8 +64,9 @@ class Aluno:
         dias = diff.days
         return anos, meses, dias
 
-    def imprime_tempo_na_academia(self):
+    def __tratamento_de_string(self):
         # Tratamento de string.
+        global anos_str, meses_str, dias_str
         anos, meses, dias = self.__calcula_tempo_na_academia()
         if anos == 0:
             anos_str = ""
@@ -103,6 +104,8 @@ class Aluno:
         elif dias > 1:
             dias_str = f"{dias} dias."
 
+    @staticmethod
+    def imprime_tempo_na_academia():
         if not anos_str and not meses_str and not dias_str:
             print("Você se matriculou hoje!")
         else:
