@@ -104,8 +104,8 @@ class Aluno:
         elif dias > 1:
             dias_str = f"{dias} dias."
 
-    @staticmethod
-    def imprime_tempo_na_academia():
+    def imprime_tempo_na_academia(self):
+        self.__tratamento_de_string()
         if not anos_str and not meses_str and not dias_str:
             print("Você se matriculou hoje!")
         else:
