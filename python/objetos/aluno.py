@@ -5,7 +5,7 @@ from dateutil import relativedelta
 class Aluno:
     def __init__(self, nome, data_de_nascimento, plano):
         self.__nome = nome
-        self.__matriculado_em = self.__matricula_hoje()
+        self.__matriculado_em = self.hoje()
         self.__data_de_nascimento = data_de_nascimento
         self.__idade = self.__calcula_idade()
         self.__plano = plano
@@ -50,7 +50,7 @@ class Aluno:
         return idade
 
     @staticmethod
-    def __matricula_hoje():
+    def hoje():
         hoje = datetime.today()
         hoje_str = hoje.strftime('%d/%m/%Y')
         return hoje_str
