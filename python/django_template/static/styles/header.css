@@ -1,0 +1,136 @@
+.cabecalho{
+    background-color: var(--branco);
+    display: flex;
+    align-items: center;
+    gap: 33%;
+    height: 4rem;
+    position: relative;
+}
+
+.container__botao:checked~.container__rotulo > .cabecalho__menu-hamburger{
+    background-image:url("../img/Menu_Aberto.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.container__botao:checked~.container__rotulo{
+    background: var(--azul-gradiente);
+}
+
+.cabecalho__menu-hamburger{
+    width: 3rem;
+    height: 3rem;
+    background-image: url("../img/Menu.svg");
+    background-position: center;
+    display: inline-block;
+    padding-left: .5em;
+}
+
+.container{
+    display: flex;
+    align-items: center;
+}
+
+.container__imagem{
+    padding: .5rem;
+}
+
+.lista-menu{
+    display: none;
+    position: absolute;
+    top: 100%;
+    width: 68vw;
+}
+
+.container__botao,
+.opcoes__botao{
+    display: none;
+}
+
+.container__botao:checked~.lista-menu{
+    display: block;
+}
+
+.lista-menu__titulo,
+.lista-menu__item{
+    padding: 1em;
+    background-color: var(--branco);
+}
+
+.lista-menu__link{
+    text-decoration: none;
+    background: var(--azul-gradiente);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 400;
+    font-size: 1rem;
+}
+
+.container__titulo{
+    display: none;
+}
+
+.lista-menu__titulo{
+    color: var(--laranja);
+    font-weight: 700;
+}
+
+.opcoes{
+    display:none;
+}
+
+@media screen and (min-width: 1024px) {
+    .opcoes__botao:checked~.opcoes__rotulo > .opcoes__item{
+        background: var(--azul-gradiente);
+        color: var(--branco);
+    }
+
+    .opcoes__item{
+        padding: 2em .5em;
+    }
+    
+    .cabecalho{
+        justify-content: center;
+    }
+    
+    .container__titulo{
+        font-family: var(--fonte2);
+        font-size: 1.875rem;
+        padding-left: 1em;
+        display: block;
+        align-items: center;
+    }
+
+    .container__titulo--negrito{
+        font-weight: 700;
+    }
+
+    .opcoes{
+        display: flex;
+        margin: 1em;
+        gap: .5em;
+    }
+
+    .opcoes__link{
+        text-decoration: none;
+        color: var(--laranja);
+    }
+    
+    .cabecalho__menu-hamburger{
+        display: none;
+    }
+
+    .opcoes__botao:checked~.lista-menu{
+        display: block;
+        width: auto;
+    }
+
+    .lista-menu__item:hover{
+        background: var(--azul-gradiente);
+    }
+
+    .lista-menu__item:hover > .lista-menu__link{
+        -webkit-text-fill-color: var(--branco);
+    }
+}
