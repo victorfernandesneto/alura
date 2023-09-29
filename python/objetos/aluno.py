@@ -114,7 +114,9 @@ class Aluno:
 
     def imprime_dados(self):
         print(
-            f"Aluno {self.__nome}, matriculado em {self.__matriculado_em}, {self.__idade} anos e treina {self.__plano} vezes na semana.")
+            f"Aluno {self.__nome}, matriculado em {self.__matriculado_em}, {self.__idade} anos"
+            f" e treina {self.__plano} vezes na semana."
+        )
 
 
 """
