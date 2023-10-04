@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from django.contrib.auth.models import User
 from datetime import datetime
 
 class Fotografia(models.Model):
@@ -16,5 +17,13 @@ class Fotografia(models.Model):
     categoria = models.CharField(max_length=2, choices=Tipos.choices, default='')
     publicada = models.BooleanField(default=False)
     data_fotografia = models.DateTimeField(default=datetime.now(), blank=False)
+    usuario = models.ForeignKey(
+        to=User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=False,
+        related_name='user'
+    )
+
     def __str__(self):
         return self.nome
