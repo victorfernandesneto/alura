@@ -1,10 +1,10 @@
-{% extends 'sobre-mim/base.html' %}
+{% extends 'shared/base.html' %}
 {% load static %}
 
 {% block content %}
             <section class="conteudo">
                 <section class="banner">
-                    <img class="banner__imagem" src="{% static '/assets/imagens/Banner(2).png' %}" alt="banner Alura Space">
+                    <img class="banner__imagem" src="{% static 'assets/imagens/Banner(2).png' %}" alt="banner Alura Space">
                     <h1 class="banner__titulo"> A galeria mais completa de fotos do espaço!</h1>
                 </section>
                 <section class="tags">
@@ -25,7 +25,7 @@
                             <li class="card">
                                 <a href="{% url 'imagem' fotografia.id %}">
                                 {% if fotografia.foto == '' or fotografia.foto == null %}
-                                    <img class="card__imagem" src="{% static '/assets/imagens/galeria/no-image-icon-23492.png'%}" alt="foto">
+                                    <img class="card__imagem" src="{% static 'assets/imagens/galeria/no-image-icon-23492.png'%}" alt="foto">
                                 </a>
                                 {% else %}
                                     <img class="card__imagem" src="{{ fotografia.foto.url }}" alt="foto">
@@ -37,7 +37,7 @@
                                     <div class="card__texto">
                                         <p class="card__descricao">{{ fotografia.legenda }}</p>
                                         <span>
-                                            <img src="{% static '/assets/ícones/1x/favorite_outline.png' %}" alt="ícone de coração">
+                                            <img src="{% static 'assets/ícones/1x/favorite_outline.png' %}" alt="ícone de coração">
                                         </span>
                                     </div>
                                 </div>
