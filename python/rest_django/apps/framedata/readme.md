@@ -1,0 +1,1 @@
+Nesse curso de Django Rest Framework, decidi, ao invés de seguir à risca o que o professor passou, criar uma API que simule o meu projeto de webscrapper da framedata de SF6, de forma que outras pessoas possam consumir essa API para desenvolver bots no Discord, por exemplo.
