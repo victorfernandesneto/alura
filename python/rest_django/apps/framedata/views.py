@@ -8,15 +8,15 @@ class CharacterViewSet(viewsets.ModelViewSet):
     """showing all characters"""
     queryset = Character.objects.all()
     serializer_class = CharacterSerializer
-    authentication_classes = [BasicAuthentication]
-    permission_classes = [IsAuthenticated]
+    # authentication_classes = [BasicAuthentication]
+    # permission_classes = [IsAuthenticated]
 
 class MoveViewSet(viewsets.ModelViewSet):
     """showing all moves"""
     queryset = Move.objects.all()
     serializer_class = MoveSerializer
-    authentication_classes = [BasicAuthentication]
-    permission_classes = [IsAuthenticated]
+    # authentication_classes = [BasicAuthentication]
+    # permission_classes = [IsAuthenticated]
 
 class ListCharacterMove(generics.ListAPIView):
     """listing the moves of a character"""
@@ -24,5 +24,5 @@ class ListCharacterMove(generics.ListAPIView):
         queryset = Move.objects.filter(character_id = self.kwargs['pk'])
         return queryset
     serializer_class = ListMoveCharacterSerializer
-    authentication_classes = [BasicAuthentication]
-    permission_classes = [IsAuthenticated]
+    # authentication_classes = [BasicAuthentication]
+    # permission_classes = [IsAuthenticated]

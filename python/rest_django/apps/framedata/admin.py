@@ -13,4 +13,5 @@ class Moves(admin.ModelAdmin):
     list_display = ['move_name', 'character']
     list_display_links = ['move_name']
     search_fields = ('character',)
+    list_filter = ['character']
     list_per_page = 100
