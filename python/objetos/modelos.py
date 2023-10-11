@@ -1,7 +1,6 @@
 from datetime import datetime
 from dateutil import relativedelta
 
-
 class Aluno:
     def __init__(self, nome, data_de_nascimento, plano):
         self._nome = nome.title()
@@ -9,7 +8,13 @@ class Aluno:
         self._data_de_nascimento = data_de_nascimento
         self._idade = self._calcula_idade()
         self._plano = plano
-        print(f"Aluno {self._nome} matriculado! Bem-vindo à PROBOXE!")
+        self.bem_vindo()
+
+    def bem_vindo(self):
+        if str(type(self)) == "<class 'modelos.Aluno'>":
+            print(f"Aluno {self._nome} matriculado! Bem-vindo à PROBOXE!")
+        else:
+            print(f"Atleta {self._nome} matriculado! Bem-vindo à PROBOXE!")
 
     @property
     def nome(self):
@@ -113,14 +118,12 @@ class Aluno:
             tempo_na_academia = f"{anos_str} {meses_str} {dias_str}"
             print(' '.join(tempo_na_academia.split()))
 
-    def imprime_dados(self):
-        print(
-            f"Aluno {self.__nome}, matriculado em {self.__matriculado_em}, {self.__idade} anos"
-            f" e treina {self.__plano} vezes na semana."
-        )
+    def __str__(self):
+        return f"Aluno {self._nome}, matriculado em {self._matriculado_em}, {self._idade} anos e treina {self._plano} vezes na semana."
 
 
 class Atleta(Aluno):
+
     def __init__(self, nome, data_de_nascimento, plano, peso):
         super().__init__(nome, data_de_nascimento, plano)
         self._peso = peso
@@ -128,7 +131,6 @@ class Atleta(Aluno):
         self._derrotas = 0
         self._lutas = self._vitorias + self._derrotas
         self._categoria = self._calcula_categoria()
-        print(f"Atleta {self._nome} matriculado! Bem-vindo à PROBOXE!")
 
     @property
     def peso(self):
@@ -154,30 +156,36 @@ class Atleta(Aluno):
 
     def _calcula_categoria(self):
         if self._peso < 49:
-            return 'Mosca-ligeiro'
+            return 'mosca-ligeiro'
         elif self._peso < 52:
-            return 'Mosca'
+            return 'mosca'
         elif self._peso < 56:
-            return 'Galo'
+            return 'galo'
         elif self._peso < 60:
-            return 'Leve'
+            return 'leve'
         elif self._peso < 64:
-            return 'Médio-ligeiro'
+            return 'médio-ligeiro'
         elif self._peso < 69:
-            return 'Meio-médio'
+            return 'meio-médio'
         elif self._peso < 75:
-            return 'Médio'
+            return 'médio'
         elif self._peso < 81:
-            return 'Meio-pesado'
+            return 'meio-pesado'
         elif self._peso < 92:
-            return 'Pesado'
+            return 'pesado'
         else:
-            return 'Super-pesado'
+            return 'super-pesado'
+        
+    def __str__(self):
+        return f"Atleta {self._nome} que luta na categoria dos {self.categoria}s, matriculado em {self._matriculado_em}, {self._idade} anos, pesa {self._peso}kg e treina {self._plano} vezes na semana."
+    
+class Turma:
+    
+    def __init__(self, alunos):
+        self._alunos = alunos
 
-"""
-from datetime import datetime
-from dateutil import relativedelta
-from modelos import Aluno, Atleta
-victor = Atleta('Victor', '29/08/1997', 5, 97)
-virginia = Aluno('Virginia', '19/06/1990', 5)
-"""
+    def __getitem__(self, item):
+        return self._alunos[item]
+    
+    def __len__(self):
+        return len(self._alunos)
