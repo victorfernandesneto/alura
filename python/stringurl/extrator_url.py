@@ -42,11 +42,10 @@ class ExtratorURL:
         return len(self.url)
     
     def __str__(self):
-        return self.url
+        return self.url + '\n' + "URL Base: " + self.get_url_base() + '\n' + 'Parâmetros: ' + self.get_url_parameters()
+    
+    def __eq__(self, other):
+        return self.url == other.url
     
 abner = ExtratorURL('https://boxrec.com/en/search?p%5Bfirst_name%5D=abner&p%5Blast_name%5D=&p%5Brole%5D=box-am&p%5Bstatus%5D=')
-print(abner.get_url_base())
-print(abner.get_url_parameters())
-print(abner.get_value_parameter('first_name'))
-print(abner.get_value_parameter('last_name'))
-print(abner.get_value_parameter('role'))
+print(abner)
