@@ -7,6 +7,7 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+
 # C extensions
 *.so
 
@@ -172,6 +173,9 @@ poetry.toml
 
 # LSP config files
 pyrightconfig.json
+
+# Arquivos de teste e formatação
 main.py
+.vscode/
 
 # End of https://www.toptal.com/developers/gitignore/api/python
