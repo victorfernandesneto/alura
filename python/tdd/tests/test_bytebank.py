@@ -4,6 +4,7 @@ from pytest import mark
 
 
 class TestClass:
+
     @mark.idade
     def test_data_de_nascimento_29_08_1997_retorna_26(self):
         entrada = '29/08/1997'  # Given

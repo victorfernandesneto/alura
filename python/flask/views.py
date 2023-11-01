@@ -1,6 +1,8 @@
-from flask import render_template, request, redirect, session, flash, url_for
-from academia import app, db
+from flask import render_template, request, redirect, session, flash, url_for, send_from_directory
+from run import app, db
 from models import Alunos, Usuarios
+from helpers import recupera_imagem, deleta_arquivo, FormularioAluno
+import time
 
 
 @app.route('/')
@@ -22,14 +24,20 @@ def alunos():
 def cadastro():
     if 'usuario_logado' not in session or session['usuario_logado'] is None:
         return redirect(url_for('tela_de_login', proxima=url_for('cadastro')))
-    return render_template('cadastro.html', titulo='Cadastro de alunos')
+    form = FormularioAluno()
+    return render_template('cadastro.html', titulo='Cadastro de alunos', form=form)
 
 
 @app.route('/criar', methods=['POST', ])
 def criar():
-    nome = request.form['nome']
-    cpf = request.form['cpf']
-    telefone = request.form['telefone']
+    form = FormularioAluno(request.form)
+
+    if not form.validate_on_submit():
+        return redirect(url_for('/cadastro'))
+
+    nome = form.nome.data()
+    cpf = form.cpf.data()
+    telefone = form.telefone.data()
 
     aluno = Alunos.query.filter_by(cpf=cpf).first()
 
@@ -41,6 +49,11 @@ def criar():
     db.session.add(novo_aluno)
     db.session.commit()
 
+    foto = request.files['foto']
+    upload_path = app.config['UPLOAD_PATH']
+    timestamp = time.time()
+    foto.save(f'{upload_path}/foto{novo_aluno.id}-{timestamp}.jpg')
+
     return redirect(url_for('alunos'))
 
 
@@ -49,7 +62,8 @@ def editar(id):
     if 'usuario_logado' not in session or session['usuario_logado'] is None:
         return redirect(url_for('tela_de_login', proxima=url_for('editar')))
     aluno = Alunos.query.filter_by(id=id).first()
-    return render_template('editar.html', titulo='Editando aluno', aluno=aluno)
+    foto_aluno = recupera_imagem(id)
+    return render_template('editar.html', titulo='Editando aluno', aluno=aluno, foto_aluno=foto_aluno)
 
 
 @app.route('/atualizar', methods=['POST', ])
@@ -63,6 +77,12 @@ def atualizar():
 
     db.session.add(aluno)
     db.session.commit()
+
+    foto = request.files['foto']
+    upload_path = app.config['UPLOAD_PATH']
+    timestamp = time.time()
+    deleta_arquivo(aluno.id)
+    foto.save(f'{upload_path}/foto{aluno.id}-{timestamp}.jpg')
 
     return redirect(url_for('alunos'))
 
@@ -81,6 +101,8 @@ def deletar(id):
 
 @app.route('/login')
 def tela_de_login():
+    if 'usuario_logado' in session and session['usuario_logado'] is not None:
+        return redirect(url_for('alunos'))
     proxima = request.args.get('proxima')
     return render_template('login.html', titulo='Login', proxima=proxima)
 
@@ -103,3 +125,7 @@ def logout():
     session['usuario_logado'] = None
     flash('Logout efetuado com sucesso!')
     return redirect(url_for('alunos'))
+
+@app.route('/uploads/<nome_arquivo>')
+def foto(nome_arquivo):
+    return send_from_directory('uploads', nome_arquivo)

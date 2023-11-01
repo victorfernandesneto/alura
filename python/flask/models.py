@@ -1,4 +1,4 @@
-from academia import db
+from run import db
 from dataclasses import dataclass
 
 @dataclass
