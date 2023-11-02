@@ -1,7 +1,10 @@
 import os
 from run import app
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, validators
+from wtforms import StringField, SubmitField, PasswordField, validators
+from validate_docbr import CPF
+from models import Alunos
+import re
 
 
 class FormularioAluno(FlaskForm):
@@ -20,7 +23,7 @@ class FormularioAluno(FlaskForm):
         ]
     )
     telefone = StringField(
-        'Nome do Aluno',
+        'Telefone',
         [
             validators.DataRequired(),
             validators.Length(min=10, max=11)
@@ -40,3 +43,22 @@ def deleta_arquivo(id):
     foto = recupera_imagem(id)
     if foto != 'foto_exemplo.jpg':
         os.remove(os.path.join(app.config['UPLOAD_PATH'], foto))
+
+class Telefone:
+    def formata_telefone(self, numero):
+        padrao_telefone = '([0-9]{2})?([0-9]{4,5})([0-9]{4})'
+        mascarado = re.match(padrao_telefone, numero)
+        if len(mascarado.group()) >= 10:
+            return '({}){}-{}'.format(
+                mascarado.group(1), mascarado.group(2), mascarado.group(3)
+            )
+        else:
+            return '{}-{}'.format(
+                mascarado.group(2), mascarado.group(3)
+            )
+
+
+def query_alunos():
+    cpf = CPF()
+    lista_de_alunos = Alunos.query.order_by('id')
+    return lista_de_alunos

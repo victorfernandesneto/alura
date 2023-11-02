@@ -20,8 +20,8 @@
         {% for aluno in lista_de_alunos %}
         <tr>
             <td>{{ aluno.nome }}</td>
-            <td>{{ aluno.cpf }}</td>
-            <td>{{ aluno.telefone }}</td>
+            <td>{{ cpf.mask(aluno.cpf) }}</td>
+            <td>{{ tel.formata_telefone(aluno.telefone) }}</td>
             {% if 'usuario_logado' in session and session['usuario_logado'] != None %}
             <td><a href="{{ url_for('editar', id=aluno.id) }}">Editar</a></td>
             <td><a href="{{ url_for('deletar', id=aluno.id) }}">Deletar</a></td>

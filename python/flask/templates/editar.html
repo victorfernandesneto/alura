@@ -12,20 +12,23 @@
             </figcaption>
         </figure>
     <fieldset>
-        <input type="hidden" name="id" value="{{ aluno.id }}">
+        <input type="hidden" name="id" value="{{ id }}">
+        {{ form.csrf_token() }}
         <div class="form-group">
-            <label for="nome">Nome</label>
-            <input type="text" id="nome" name="nome" class="form-control" value="{{ aluno.nome }}">
+            {{ form.nome.label(class="form-label") }}
+            {{ form.nome(class="form-control") }}
         </div>
         <div class="form-group">
-            <label for="cpf">CPF</label>
-            <input type="text" id="cpf" name="cpf" class="form-control" value="{{ aluno.cpf }}">
+            {{ form.cpf.label(class="form-label") }}
+            {{ form.cpf(class="form-control") }}
         </div>
         <div class="form-group">
-            <label for="telefone">Telefone</label>
-            <input type="text" id="telefone" name="telefone" class="form-control" value="{{ aluno.telefone }}">
+            {{ form.telefone.label(class="form-label") }}
+            {{ form.telefone(class="form-control") }}
         </div>
-        <button type="submit" class="btn btn-primary btn-salvar">Salvar</button>
+        <div>
+            {{ form.salvar(class="btn btn-primary") }}
+        </div>
         <a class="btn btn-danger" href="{{ url_for('alunos') }}">Voltar</a>
     </fieldset>
 </form>

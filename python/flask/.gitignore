@@ -7,6 +7,9 @@ create_db.py
 # Arquivo de configuração da aplicação
 config.py
 
+# Pasta de uploads
+uploads/
+
 ### Flask ###
 instance/*
 !instance/.gitignore

@@ -1,9 +1,9 @@
 from flask import render_template, request, redirect, session, flash, url_for, send_from_directory
 from run import app, db
 from models import Alunos, Usuarios
-from helpers import recupera_imagem, deleta_arquivo, FormularioAluno
+from helpers import recupera_imagem, deleta_arquivo, FormularioAluno, query_alunos, Telefone
+from validate_docbr import CPF
 import time
-
 
 @app.route('/')
 def index():
@@ -12,12 +12,18 @@ def index():
 
 @app.route('/alunos')
 def alunos():
-    lista_de_alunos = Alunos.query.order_by('id')
+    cpf = CPF()
+    telefone = Telefone()
+    lista_de_alunos = query_alunos()
     return render_template(
         'alunos.html',
         titulo='Alunos',
         lista_de_alunos=lista_de_alunos,
-        session=session)
+        session=session,
+        # passo esses dois objetos pra poder aplicar a máscara na tabela
+        cpf=cpf,
+        tel=telefone
+    )
 
 
 @app.route('/cadastro')
@@ -31,14 +37,15 @@ def cadastro():
 @app.route('/criar', methods=['POST', ])
 def criar():
     form = FormularioAluno(request.form)
-
+    cpf_validator = CPF()
     if not form.validate_on_submit():
-        return redirect(url_for('/cadastro'))
-
-    nome = form.nome.data()
-    cpf = form.cpf.data()
-    telefone = form.telefone.data()
-
+        return redirect(url_for('cadastro'))
+    nome = form.nome.data
+    cpf = form.cpf.data
+    if not cpf_validator.validate(cpf):
+        flash('CPF inválido!')
+        return redirect(url_for('cadastro'))
+    telefone = form.telefone.data
     aluno = Alunos.query.filter_by(cpf=cpf).first()
 
     if aluno:
@@ -62,27 +69,32 @@ def editar(id):
     if 'usuario_logado' not in session or session['usuario_logado'] is None:
         return redirect(url_for('tela_de_login', proxima=url_for('editar')))
     aluno = Alunos.query.filter_by(id=id).first()
+    form = FormularioAluno()
+    form.nome.data = aluno.nome
+    form.cpf.data = aluno.cpf
+    form.telefone.data = aluno.telefone
     foto_aluno = recupera_imagem(id)
-    return render_template('editar.html', titulo='Editando aluno', aluno=aluno, foto_aluno=foto_aluno)
+    return render_template('editar.html', titulo='Editando aluno', id=id, form=form, foto_aluno=foto_aluno)
 
 
 @app.route('/atualizar', methods=['POST', ])
 def atualizar():
-    id_aluno = request.form['id']
+    form = FormularioAluno(request.form)
+    if form.validate_on_submit():
+        id_aluno = request.form['id']
+        aluno = Alunos.query.filter_by(id=id_aluno).first()
+        aluno.nome = form.nome.data
+        aluno.cpf = form.cpf.data
+        aluno.telefone = form.telefone.data
 
-    aluno = Alunos.query.filter_by(id=id_aluno).first()
-    aluno.nome = request.form['nome']
-    aluno.cpf = request.form['cpf']
-    aluno.telefone = request.form['telefone']
+        db.session.add(aluno)
+        db.session.commit()
 
-    db.session.add(aluno)
-    db.session.commit()
-
-    foto = request.files['foto']
-    upload_path = app.config['UPLOAD_PATH']
-    timestamp = time.time()
-    deleta_arquivo(aluno.id)
-    foto.save(f'{upload_path}/foto{aluno.id}-{timestamp}.jpg')
+        foto = request.files['foto']
+        upload_path = app.config['UPLOAD_PATH']
+        timestamp = time.time()
+        deleta_arquivo(aluno.id)
+        foto.save(f'{upload_path}/foto{aluno.id}-{timestamp}.jpg')
 
     return redirect(url_for('alunos'))
 
