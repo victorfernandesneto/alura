@@ -1,9 +1,10 @@
 from flask import render_template, request, redirect, session, flash, url_for, send_from_directory
 from run import app, db
-from models import Alunos, Usuarios
-from helpers import recupera_imagem, deleta_arquivo, FormularioAluno, FormularioUsuario, query_alunos, Telefone
+from models import Alunos
+from helpers import recupera_imagem, deleta_arquivo, FormularioAluno, query_alunos, Telefone
 from validate_docbr import CPF
 import time
+
 
 @app.route('/')
 def index():
@@ -51,7 +52,6 @@ def criar():
     if aluno:
         flash('Aluno já cadastrado!')
         return redirect(url_for('alunos'))
-
     novo_aluno = Alunos(nome=nome, cpf=cpf, telefone=telefone)
     db.session.add(novo_aluno)
     db.session.commit()
@@ -115,35 +115,6 @@ def deletar(id):
 
     return redirect(url_for('alunos'))
 
-
-@app.route('/login')
-def tela_de_login():
-    if 'usuario_logado' in session and session['usuario_logado'] is not None:
-        return redirect(url_for('alunos'))
-    proxima = request.args.get('proxima')
-    form = FormularioUsuario()
-    return render_template('login.html', titulo='Login', proxima=proxima, form=form)
-
-
-@app.route('/autenticar', methods=['POST', ])
-def autenticar_usuario():
-    form = FormularioUsuario(request.form)
-    usuario = Usuarios.query.filter_by(nome=form.usuario.data).first()
-    if usuario:
-        if usuario.senha == form.senha.data:
-            session['usuario_logado'] = usuario
-            flash(f'{usuario.nome} logado com sucesso!')
-            proxima_pagina = request.form['proxima']
-            return redirect(url_for(proxima_pagina.replace('/', '')))
-    flash('Credenciais incorretas.')
-    return redirect(url_for('tela_de_login'))
-
-
-@app.route('/logout')
-def logout():
-    session['usuario_logado'] = None
-    flash('Logout efetuado com sucesso!')
-    return redirect(url_for('alunos'))
 
 @app.route('/uploads/<nome_arquivo>')
 def foto(nome_arquivo):
