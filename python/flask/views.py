@@ -1,7 +1,7 @@
 from flask import render_template, request, redirect, session, flash, url_for, send_from_directory
 from run import app, db
 from models import Alunos, Usuarios
-from helpers import recupera_imagem, deleta_arquivo, FormularioAluno, query_alunos, Telefone
+from helpers import recupera_imagem, deleta_arquivo, FormularioAluno, FormularioUsuario, query_alunos, Telefone
 from validate_docbr import CPF
 import time
 
@@ -79,6 +79,7 @@ def editar(id):
 
 @app.route('/atualizar', methods=['POST', ])
 def atualizar():
+    cpf_validator = CPF()
     form = FormularioAluno(request.form)
     if form.validate_on_submit():
         id_aluno = request.form['id']
@@ -86,6 +87,10 @@ def atualizar():
         aluno.nome = form.nome.data
         aluno.cpf = form.cpf.data
         aluno.telefone = form.telefone.data
+
+        if not cpf_validator.validate(aluno.cpf):
+            flash('CPF inválido!')
+            return redirect(url_for('editar', id=id_aluno))
 
         db.session.add(aluno)
         db.session.commit()
@@ -106,7 +111,7 @@ def deletar(id):
 
     Alunos.query.filter_by(id=id).delete()
     db.session.commit()
-    flash('Jogo deletado com sucesso!')
+    flash('Aluno deletado com sucesso!')
 
     return redirect(url_for('alunos'))
 
@@ -116,14 +121,16 @@ def tela_de_login():
     if 'usuario_logado' in session and session['usuario_logado'] is not None:
         return redirect(url_for('alunos'))
     proxima = request.args.get('proxima')
-    return render_template('login.html', titulo='Login', proxima=proxima)
+    form = FormularioUsuario()
+    return render_template('login.html', titulo='Login', proxima=proxima, form=form)
 
 
 @app.route('/autenticar', methods=['POST', ])
 def autenticar_usuario():
-    usuario = Usuarios.query.filter_by(nome=request.form['usuario']).first()
+    form = FormularioUsuario(request.form)
+    usuario = Usuarios.query.filter_by(nome=form.usuario.data).first()
     if usuario:
-        if usuario.senha == request.form['senha']:
+        if usuario.senha == form.senha.data:
             session['usuario_logado'] = usuario
             flash(f'{usuario.nome} logado com sucesso!')
             proxima_pagina = request.form['proxima']

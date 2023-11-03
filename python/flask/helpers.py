@@ -7,6 +7,23 @@ from models import Alunos
 import re
 
 
+class FormularioUsuario(FlaskForm):
+    usuario = StringField(
+        'Usuário',
+        [
+            validators.DataRequired(),
+            validators.Length(min=1, max=20)
+        ]
+    )
+    senha = PasswordField(
+        'Senha',
+        [
+            validators.DataRequired(),
+            validators.Length(min=1, max=100)
+        ]
+    )
+    login = SubmitField('Logar')
+
 class FormularioAluno(FlaskForm):
     nome = StringField(
         'Nome do Aluno',
